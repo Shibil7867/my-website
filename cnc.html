@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Machine 1 Readings</title>
+    <style>
+        body {
+            background-color: #FFEBEE;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .data-container {
+            text-align: center;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            width: 60%;
+        }
+
+        .data-item {
+            margin: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #D32F2F;
+        }
+
+        .data-item p {
+            font-size: 40px;
+            color: #C2185B;
+        }
+
+        .header {
+            margin: 40px auto;
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            padding: 20px;
+            background-color: #E57373;
+            color: #FFFFFF;
+            border-radius: 10px;
+            width: 50%;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #D32F2F;
+            color: #FFF;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            width: 10%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">Machine 1 Details</div>
+
+    <div class="data-container">
+        <div class="data-item">
+            <h2>Current</h2>
+            <p id="current">-- A</p>
+        </div>
+        <div class="data-item">
+            <h2>Power</h2>
+            <p id="power">-- W</p>
+        </div>
+        <div class="data-item">
+            <h2>Units</h2>
+            <p id="units">-- kWh</p>
+        </div>
+        <div class="data-item">
+            <h2>Count</h2>
+            <p id="count">--</p>
+        </div>
+    </div>
+
+    <a class="back-btn" href="web.html">Back</a>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+    <script type="module">
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcAYor0bL4yZogxevtQiPXmYdh9wxofh8e",
+            authDomain: "data-monitor-cnc-mtc.firebaseapp.com",
+            databaseURL: "https://data-monitor-cnc-mtc-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "data-monitor-cnc-mtc",
+            storageBucket: "data-monitor-cnc-mtc.appspot.com",
+            measurementId: "G-EWMDPH6BLQ",
+            appId: "1:647207273310:web:835effabef417971f9c5cf"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        // Database reference
+        var database = firebase.database();
+
+        // Machine 1 data
+        var currentRef = database.ref('sensor/current');
+        var powerRef = database.ref('sensor/power');
+        var unitsRef = database.ref('sensor/energy');
+        var countRef = database.ref('sensor/count');
+
+        // Fetch and update data
+        currentRef.on('value', function(snapshot) {
+            document.getElementById('current').innerHTML = snapshot.val() + " A";
+        });
+
+        powerRef.on('value', function(snapshot) {
+            document.getElementById('power').innerHTML = snapshot.val() + " W";
+        });
+
+        unitsRef.on('value', function(snapshot) {
+            document.getElementById('units').innerHTML = snapshot.val() + " kWh";
+        });
+
+        countRef.on('value', function(snapshot) {
+            document.getElementById('count').innerHTML = snapshot.val();
+        });
+    </script>
+
+</body>
+</html>
